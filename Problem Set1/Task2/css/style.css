@@ -76,3 +76,44 @@ ul.plain{
     width: 100%;
     height: auto;
 }
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+
+}
+
+thead{
+    background-color: black;
+    color: white;
+}
+
+tfoot{
+    background-color: darkgray;
+    color: black;
+    font-weight: bold;
+}
+
+thead th, tbody td{
+    text-align: left;
+    border-style: solid;
+    border-color: darkgray;
+}
+
+.title-with-side{
+    /*两者设为相同以使div内的h2位置上下居中*/
+    height: 50px;
+    line-height: 50px;   
+}
+
+.title-with-side > h2{
+    display: inline;
+}
+
+.side-rule{
+    height: 100%;
+    width: 4px;
+    margin-right: 10px;
+    background-color: darkgray;
+    float: left;
+}
