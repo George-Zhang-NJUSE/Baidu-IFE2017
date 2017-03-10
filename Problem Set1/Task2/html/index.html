@@ -112,35 +112,54 @@
         <section>
             <div class="title-with-side">
                 <div class="side-rule"></div>
-                <h2>这里以后是一个侧栏</h2>
+                <h2>这里以后是一个侧栏，这是侧栏的标题</h2>
             </div>
-            <h3>侧栏注册窗口标题</h3>
-            <p>请输入邮箱地址：<input type="email" placeholder="邮箱地址"></p>
-            <p>请输入密码：<input type="password" placeholder="密码需为6到16位英文数字"></p>
-            <p>再输入一遍：<input type="password" placeholder="密码需为6到16位英文数字"></p>
-            <p>性别：
-            <input type="radio" name="gender" value="male">男
-            <input type="radio" name="gender" value="female">女
-            </p>
-            <p>城市：
-            <select name="city">
-                <option value="beijing">北京</option>
-                <option value="shanghai">上海</option>
-                <option value="guangzhou">广州</option>
-                <option value="shenzhen">深圳</option>
-            </select>
-            </p>
-            <label>爱好：</label>
-            <input type="checkbox" name="hobbies" value="swimming">游泳
-            <input type="checkbox" name="hobbies" value="singing">唱歌
-            <input type="checkbox" name="hobbies" value="dancing">跳舞
-            <input type="checkbox" name="hobbies" value="jogging">跑步
-            <p>个人描述：<textarea rows="5" cols="60" placeholder="这是您的个人描述"></textarea></p>
-            <button type="submit">提交</button>
+            <div class="form-line">
+                <label for="email-addr" class="form-disc">请输入邮箱地址：</label>
+                <input type="email" placeholder="邮箱地址" id="email-addr" class="form-control">               
+            </div>
+            <div class="form-line">
+                <label for="psw" class="form-disc">请输入密码：</label>
+                <input type="password" placeholder="密码需为6到16位英文数字" id="psw" class="form-control">
+            </div>
+            <div class="form-line">
+                <label for="psw-re" class="form-disc">再输入一遍：</label>
+                <input type="password" placeholder="密码需为6到16位英文数字" id="psw-re" class="form-control">
+            </div>
+            <div class="form-line">
+                <label class="form-disc">性别：</label>
+                <span class="form-control">
+                    <input type="radio" name="gender" value="male" id="radio-male"><label for="radio-male">男</label>
+                    <input type="radio" name="gender" value="female" id="radio-female"><label for="radio-female">女</label>
+                </span>
+            </div>
+            <div class="form-line">
+                <label class="form-disc">城市：</label>
+                <select name="city" class="form-control">
+                    <option value="beijing">北京</option>
+                    <option value="shanghai">上海</option>
+                    <option value="guangzhou">广州</option>
+                    <option value="shenzhen">深圳</option>
+                </select>
+            </div>
+            <div class="form-line">
+                <label class="form-disc">爱好：</label>
+                <span class="form-control">
+                    <input type="checkbox" name="hobbies" value="swimming" id="check-swimming"><label for="check-swimming">游泳</label>
+                    <input type="checkbox" name="hobbies" value="singing" id="check-singing"><label for="check-singing">唱歌</label>
+                    <input type="checkbox" name="hobbies" value="dancing" id="check-dancing"><label for="check-dancing">跳舞</label>
+                    <input type="checkbox" name="hobbies" value="jogging" id="check-jogging"><label for="check-jogging">跑步</label>
+                </span>
+            </div>
+            <div class="form-line">
+                <label class="form-disc">个人描述：</label>
+                <textarea rows="5" cols="60" placeholder="这是您的个人描述" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">提交</button>
         </section>
 
         <footer>
-            版权所有&copy;
+            <label>版权所有&copy;</label>
         </footer>
     </body>
 </html>

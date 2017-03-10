@@ -117,3 +117,43 @@ thead th, tbody td{
     background-color: darkgray;
     float: left;
 }
+
+.form-line{
+    margin: 1em;
+    height: 2em;
+    line-height: 2em;
+}
+
+.form-line *{
+    height: 2em;
+    vertical-align: middle;
+}
+
+.form-disc{
+    position: absolute;
+    right: 65%;
+}
+
+.form-control{
+    position: absolute;
+    left: 35%;
+}
+
+.submit-btn{
+    height: 2em;
+    font-size: 1.5em;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 10px;
+    background-color: cadetblue;
+    color: white;
+}
+
+footer{
+    background-color: black;
+    color: white;
+    height: 4em;
+    line-height: 4em;
+    text-align: center;
+}
+
