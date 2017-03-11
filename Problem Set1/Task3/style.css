@@ -1,0 +1,52 @@
+*{
+    box-sizing: border-box;
+}
+
+div{
+    border: 1px solid #999;
+}
+
+section{
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #999;
+    background: #eee;
+    overflow: auto;
+}
+
+section > div{
+    background: white;
+    padding: 20px;
+}
+
+.left{
+    width: 200px;
+    overflow: auto;
+    float: left;
+}
+
+.logo{
+    background: #eee;
+    width: 80px;
+    height: 80px;
+    float: left;
+    text-align: center;
+}
+
+.left .logo ~ *{
+    margin-left: 20px;
+}
+
+.middle{
+    margin-left: 220px;
+    margin-right: 140px;
+}
+
+.right{
+    float: right;
+    width: 120px;
+}
+
+.right .logo ~ .logo{
+    margin-top: 20px;
+}
