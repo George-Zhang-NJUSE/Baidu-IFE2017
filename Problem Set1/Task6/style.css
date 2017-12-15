@@ -1,0 +1,143 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: auto;
+    width: 980px;
+    height: 1386px;
+    background: white;
+}
+
+header{
+    position: relative;
+    width: 892px;
+    border-bottom: 2px solid #938e8c;
+    margin: auto;
+}
+
+#address{
+    position: relative;
+    width: 110px;
+    height: 61px;
+    color: white;
+    background: #d45d5c;
+    font: 12px "黑体";
+    vertical-align: bottom;
+    display: inline-block;
+}
+
+#address > label{
+    position: absolute;
+    left: 6px;
+    bottom: 6px;
+}
+
+#date{
+    color: #d45d5c;
+    position: absolute;
+    font: 12px "黑体";
+    bottom: 6px;
+    right: 0px;
+}
+
+section{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 892px;
+}
+
+.img-display{
+    width: 641px;
+    height: 301px;
+    position: relative;
+    float: left;
+}
+
+.img-display > img{
+    width: inherit;
+    height: inherit;
+}
+
+.vertical-curtain{
+    width: 191px;
+    height: inherit;
+    position: absolute;
+    top: 0px;
+    opacity: 0.5;
+}
+
+.curtain-left{
+    background: #75b86b;
+    left: 0px;
+}
+
+.curtain-right{
+    background: #cc8091;
+    right: 0px;
+}
+
+.right-words{
+    width: 203px;
+    height: 301px;
+    border-top: 2px solid #cc8091;
+    margin-left: 689px;
+}
+
+.right-words > .title{
+    font: 24px "微软雅黑";
+    text-decoration: underline;
+    line-height: 30px;
+}
+
+.right-words strong{
+    font-size: 130%;
+}
+
+.right-words > .mini{
+    font: italic 12px "楷体";
+    color: #676767;
+}
+
+.right-words > .big{
+    font: bold 100px "微软雅黑";
+    color: #75b86b;
+}
+
+.right-words-bottom{
+    overflow: auto;
+}
+
+.right-words .left-big-words{
+    font: 50px "微软雅黑";
+    color: #cc8091;
+    float: left;
+}
+
+.right-words .right-middle-words{
+    font: 21px "微软雅黑";
+    color: #cc8091;
+}
+
+#middle-words{
+    width: 641px;
+    margin-right: 233px;
+}
+
+#middle-words > div{
+    width: 203px;
+    height: 300px;
+    float: left;
+}
+
+#middle-words div~div{
+    margin-left: 16px;
+}
+
+#middle-words .underline-title{
+    font: 16px;
+    text-decoration: underline; 
+}
+
