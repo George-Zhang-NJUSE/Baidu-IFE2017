@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IFE JavaScript Task 04</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <input type="number" id="input">
+            <button id="left-in">左侧入</button>
+            <button id="right-in">右侧入</button>
+            <button id="left-out">左侧出</button>
+            <button id="right-out">右侧出</button>
+        </div>
+        <div id="container"></div>
+        <script type="text/javascript">
+            (function () {
+
+                const input = document.querySelector('#input');
+                const container = document.querySelector('#container');
+
+                function removeSelf() {
+                    const content = this.textContent;
+                    this.remove();
+                    alert('删除的内容为：' + content);
+                }
+
+                function createBlock(content) {
+                    const element = document.createElement('span');
+                    element.innerText = content;
+                    element.style.cssText = `
+                        display: inline-block;
+                        color: white;
+                        background: #af0102;
+                        height: 60px;
+                        margin: 20px;
+                        padding: 20px;
+                        border: none;
+                        border-radius: 4px;     
+                    `
+                    element.addEventListener('click', removeSelf)
+                    return element;
+                }
+
+                function getInput() {
+                    const content = +input.value;
+                    input.value = '';
+
+                    if (isNaN(content)) {
+                        return alert('请输入数字');
+                    }
+
+                    return content;
+                }
+
+                function handleLeftIn() {
+                    const content = getInput();
+                    if (content) {
+                        container.insertBefore(createBlock(content), container.firstChild)
+                    }
+                }
+
+                function handleRightIn() {
+                    const content = getInput();
+                    if (content) {
+                        container.appendChild(createBlock(content))
+                    }
+                }
+
+                function handleLeftOut() {
+                    if (container.hasChildNodes()) {
+                        const removedElement = container.removeChild(container.firstChild);
+                        alert('删除的内容为：' + removedElement.textContent);
+                    }
+                }
+
+                function handleRightOut() {
+                    if (container.hasChildNodes()) {
+                        const removedElement = container.removeChild(container.lastChild);
+                        alert('删除的内容为：' + removedElement.textContent);
+                    }
+                }
+
+                document.querySelector('#left-in').addEventListener('click', handleLeftIn);
+                document.querySelector('#right-in').addEventListener('click', handleRightIn);
+                document.querySelector('#left-out').addEventListener('click', handleLeftOut);
+                document.querySelector('#right-out').addEventListener('click', handleRightOut);
+            })();
+        </script>
+    </body>
+</html>
