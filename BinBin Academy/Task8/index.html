@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IFE JavaScript Task 08</title>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            #container div {
+                display: inline-block;
+                border-radius: 4px;
+                border: 2px solid lightcoral;
+                background: white;
+                color: coral;
+                padding: 20px;
+                transition: all 0.3s;
+            }
+
+            .current {
+                background: lightcoral !important;
+                color: white !important;
+            }
+
+            .match {
+                background: coral !important;
+                color: white !important;
+                animation: emphasis 0.3s;
+            }
+
+            @keyframes emphasis {
+                0% {
+                    transform: initial
+                }
+                50% {
+                    transform: scale(1.3)
+                }
+                100% {
+                    transform: initial;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="root">
+                super
+                <div>
+                    apple
+                    <div>
+                        phone
+                        <div>fish</div>
+                        <div>dog</div>
+                        <div>void</div>
+                    </div>
+                    <div>
+                        lite
+                    </div>
+                    <div>
+                        mouse
+                        <div>cat</div>
+                        <div>tiger</div>
+                    </div>
+                </div>
+                <div>
+                    note
+                    <div>
+                        kiss
+                        <div>
+                            love
+                            <div>fire</div>
+                        </div>
+                        <div>hand</div>
+                        <div>promise</div>
+                    </div>
+                    <div>
+                        glove
+                        <div>leaf</div>
+                        <div>flower</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="preorder-btn">深度优先前序遍历</button>
+        <button id="postorder-btn">深度优先后序遍历</button>
+        <button id="breadth-btn">广度优先遍历</button>
+        <form id="search-form">
+            <label>查找内容：
+                <input type="text" id="search-input">
+            </label>
+            <label>查找方式：
+                <select id="traverse-method">
+                    <option value="preorder" selected>深度优先前序</option>
+                    <option value="postorder">深度优先后序</option>
+                    <option value="breadthFirst">广度优先</option>
+                </select>
+            </label>
+            <input type="submit" id="search-submit" value="查找">
+        </form>
+
+        <script type="text/javascript">
+            (function () {
+                'use strict';
+                const root = document.querySelector('#root');
+
+                async function highlight(node) {
+                    node.classList.toggle('current');
+                    await new Promise((resolve) => {
+                        setTimeout(() => resolve(), 600);
+                    });
+                    node.classList.toggle('current');
+                }
+
+                async function checkSingle(node, content) {
+                    await highlight(node);
+                    // 如果有文本的话，firstChild指向文本节点
+                    if (node.firstChild.textContent.trim() === content) {
+                        node.classList.add('match');
+                        return node;
+                    }
+                    return false;
+                }
+
+                async function preorderTraverse(initialRoot, process) {
+                    let result;
+                    await (async function preorder(treeRoot) {
+                        if (!treeRoot || result) {
+                            return;
+                        }
+
+                        result = await process(treeRoot);
+                        for (const subTree of treeRoot.children) {
+                            await preorder(subTree);
+                        }
+                    })(initialRoot);
+                    return result;
+                }
+
+                async function postorderTraverse(initialRoot, process) {
+                    let result;
+                    await (async function postOrder(treeRoot) {
+                        if (!treeRoot) {
+                            return;
+                        }
+
+                        for (const subTree of treeRoot.children) {
+                            await postOrder(subTree);
+                        }
+
+                        if (result) {
+                            return;
+                        }
+                        result = await process(treeRoot);
+                    })(initialRoot);
+                    return result;
+                }
+
+                async function breadthFirstTraverse(treeRoot, process) {
+                    if (!treeRoot) {
+                        return;
+                    }
+
+                    const queue = [treeRoot];
+                    while (queue.length !== 0) {
+                        const nextNode = queue.shift();
+                        const result = await process(nextNode);
+                        if (result) {
+                            return result;
+                        }
+                        queue.push(...nextNode.children)
+                    }
+                }
+
+                const searchInput = document.querySelector('#search-input');
+                const methodSelect = document.querySelector('#traverse-method');
+
+                async function handleSearch(event) {
+                    event.preventDefault();
+                    const content = searchInput.value.trim();
+                    Array.from(document.querySelectorAll('#container div')).forEach(element => {
+                        element.classList.remove('match');
+                    });
+                    if (content) {
+                        const traverseMethods = {
+                            preorder: preorderTraverse,
+                            postorder: postorderTraverse,
+                            breadthFirst: breadthFirstTraverse
+                        };
+                        const nodeFound = await traverseMethods[methodSelect.value](root, node => checkSingle(node, content));
+                        if (!nodeFound) {
+                            alert('找不到该内容！');
+                        }
+                    }
+                }
+
+                document.querySelector('#preorder-btn').addEventListener('click', () => preorderTraverse(root, highlight));
+                document.querySelector('#postorder-btn').addEventListener('click', () => postorderTraverse(root, highlight));
+                document.querySelector('#breadth-btn').addEventListener('click', () => breadthFirstTraverse(root, highlight));
+                document.querySelector('#search-form').addEventListener('submit', handleSearch);
+            })();
+        </script>
+    </body>
+</html>

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>IFE JavaScript Task 04</title>
+        <title>IFE JavaScript Task 06</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -10,19 +10,29 @@
 
             .block {
                 display: inline-block;
-                color: white;
-                background: #af0102;
+                color: black;
+                background: white;
+                border: 2px solid lightcoral;
                 height: 60px;
                 margin: 20px;
                 padding: 20px;
-                border: none;
                 border-radius: 4px;
+                transition: all 0.3s;
+            }
+
+            .block:hover{
+                cursor: pointer;
+            }
+
+            .matched {
+                background: lightcoral;
+                color: white;
             }
         </style>
     </head>
     <body>
         <div>
-            <textarea id="input" cols="40" rows="20"></textarea>
+            <textarea id="content-input" cols="40" rows="20"></textarea>
             <button id="left-in">左侧入</button>
             <button id="right-in">右侧入</button>
             <button id="left-out">左侧出</button>
@@ -34,8 +44,23 @@
         <script type="text/javascript">
             (function () {
 
-                const input = document.querySelector('#input');
+                const contentInput = document.querySelector('#content-input');
                 const container = document.querySelector('#container');
+                const keywordInput = document.querySelector('#search-key');
+
+                function fetchInput(inputElement, shouldClear = false) {
+                    const content = inputElement.value.trim();
+                    shouldClear && (inputElement.value = '');
+                    return content;
+                }
+
+                function getContent() {
+                    return fetchInput(contentInput, true);
+                }
+
+                function getKeyword() {
+                    return fetchInput(keywordInput);
+                }
 
                 function removeSelf() {
                     const content = this.textContent;
@@ -43,7 +68,7 @@
                     alert('删除的内容为：' + content);
                 }
 
-                function createBlock(content) {
+                function createSingleBlock(content) {
                     const element = document.createElement('span');
                     element.innerText = content;
                     element.className = 'block';
@@ -51,23 +76,25 @@
                     return element;
                 }
 
-                function getInput() {
-                    const content = input.value.trim();
-                    input.value = '';
-                    return content.split('\n');
+                function createBlocks(allContent) {
+                    const fragment = document.createDocumentFragment();
+                    allContent.split(/\n/).forEach(content => {
+                        fragment.appendChild(createSingleBlock(content));
+                    });
+                    return fragment;
                 }
 
                 function handleLeftIn() {
-                    const content = getInput();
+                    const content = getContent();
                     if (content) {
-                        container.insertBefore(createBlock(content), container.firstChild)
+                        container.insertBefore(createBlocks(content), container.firstChild)
                     }
                 }
 
                 function handleRightIn() {
-                    const content = getInput();
+                    const content = getContent();
                     if (content) {
-                        container.appendChild(createBlock(content))
+                        container.appendChild(createBlocks(content))
                     }
                 }
 
@@ -85,10 +112,22 @@
                     }
                 }
 
+                function handleSearch() {
+                    const keyword = getKeyword();
+                    if (keyword) {
+                        const elements = Array.prototype.slice.apply(container.children);
+                        elements.forEach(elem => {
+                            const isMatched = elem.textContent.indexOf(keyword) !== -1;
+                            elem.classList.toggle('matched', isMatched);
+                        });
+                    }
+                }
+
                 document.querySelector('#left-in').addEventListener('click', handleLeftIn);
                 document.querySelector('#right-in').addEventListener('click', handleRightIn);
                 document.querySelector('#left-out').addEventListener('click', handleLeftOut);
                 document.querySelector('#right-out').addEventListener('click', handleRightOut);
+                document.querySelector('#search-btn').addEventListener('click', handleSearch);
             })();
         </script>
     </body>
