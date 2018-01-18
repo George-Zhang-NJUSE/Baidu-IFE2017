@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>IFE JavaScript Task 08</title>
+        <title>IFE JavaScript Task 09</title>
         <style>
             * {
                 box-sizing: border-box;
@@ -18,12 +18,16 @@
                 transition: all 0.3s;
             }
 
+            #container div:hover {
+                cursor: pointer;
+            }
+
             .current {
                 background: lightcoral !important;
                 color: white !important;
             }
 
-            .match {
+            .selected {
                 background: coral !important;
                 color: white !important;
                 animation: emphasis 0.3s;
@@ -34,7 +38,7 @@
                     transform: initial
                 }
                 50% {
-                    transform: scale(1.3)
+                    transform: scale(1.2)
                 }
                 100% {
                     transform: initial;
@@ -87,7 +91,7 @@
         <button id="breadth-btn">广度优先遍历</button>
         <form id="search-form">
             <label>查找内容：
-                <input type="text" id="search-input">
+                <input type="text" id="search-input" required>
             </label>
             <label>查找方式：
                 <select id="traverse-method">
@@ -96,8 +100,15 @@
                     <option value="breadthFirst">广度优先</option>
                 </select>
             </label>
-            <input type="submit" id="search-submit" value="查找">
+            <input type="submit" value="查找">
         </form>
+        <form id="add-form">
+            <label>增加内容：
+                <input type="text" id="add-input" required>
+            </label>
+            <input type="submit" value="增加">
+        </form>
+        <button id="delete-btn">删除</button>
 
         <script>
             (function () {
@@ -116,7 +127,7 @@
                     await highlight(node);
                     // 如果有文本的话，firstChild指向文本节点
                     if (node.firstChild.textContent.trim() === content) {
-                        node.classList.add('match');
+                        node.classList.add('selected');
                         return node;
                     }
                     return false;
@@ -172,12 +183,18 @@
                     }
                 }
 
+                function clearSelected() {
+                    Array.from(document.querySelectorAll('#container div')).forEach(element => {
+                        element.classList.remove('selected');
+                    });
+                }
+
                 const searchInput = document.querySelector('#search-input');
                 const methodSelect = document.querySelector('#traverse-method');
 
                 async function handleSearch(event) {
                     event.preventDefault();
-                    clearMatch();
+                    clearSelected();
                     const content = searchInput.value.trim();
                     if (content) {
                         const traverseMethods = {
@@ -192,21 +209,52 @@
                     }
                 }
 
-                function clearMatch() {
-                    Array.from(document.querySelectorAll('#container div')).forEach(element => {
-                        element.classList.remove('match');
-                    });
-                }
-
-                function handleTraverse(traverseMethod) {
-                    clearMatch();
+                function traverse(traverseMethod) {
+                    clearSelected();
                     traverseMethod(root, highlight);
                 }
 
-                document.querySelector('#preorder-btn').addEventListener('click', () => handleTraverse(preorderTraverse));
-                document.querySelector('#postorder-btn').addEventListener('click', () => handleTraverse(postorderTraverse));
-                document.querySelector('#breadth-btn').addEventListener('click', () => handleTraverse(breadthFirstTraverse));
+                function handleSelect(event) {
+                    clearSelected();
+                    event.target.classList.add('selected');
+                }
+
+                const addInput = document.querySelector('#add-input');
+
+                function handleAdd(event) {
+                    event.preventDefault();
+                    const parent = document.querySelector('#container div.selected');
+                    if (!parent) {
+                        return alert('请先选择要添加内容的父节点！');
+                    }
+
+                    const content = addInput.value.trim();
+                    if (content) {
+                        const newElement = document.createElement('div');
+                        newElement.innerText = content;
+                        parent.appendChild(newElement);
+                        addInput.value = '';
+                    }
+                }
+
+                function handleDelete() {
+                    const node = document.querySelector('#container div.selected');
+                    if (!node) {
+                        return alert('请先选择要删除的节点！');
+                    }
+                    if (node === root) {
+                        return alert('不允许删除根节点！');
+                    }
+                    node.remove();
+                }
+
+                document.querySelector('#preorder-btn').addEventListener('click', () => traverse(preorderTraverse));
+                document.querySelector('#postorder-btn').addEventListener('click', () => traverse(postorderTraverse));
+                document.querySelector('#breadth-btn').addEventListener('click', () => traverse(breadthFirstTraverse));
                 document.querySelector('#search-form').addEventListener('submit', handleSearch);
+                document.querySelector('#add-form').addEventListener('submit', handleAdd);
+                document.querySelector('#delete-btn').addEventListener('click', handleDelete);
+                root.addEventListener('click', handleSelect);
             })();
         </script>
     </body>
