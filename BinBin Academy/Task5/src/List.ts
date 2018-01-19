@@ -13,6 +13,9 @@ export class List {
         this.blockList.forEach(block => block.draw());
     }
 
+    /**
+     * 根据当前块数量，重新居中对齐各个块位置
+     */
     private rearrange() {
         const { blockList, context } = this;
         if (blockList.length > 0) {
@@ -80,8 +83,9 @@ export class List {
                 }
             }
             await new Promise((resolve, reject) => {
+                // 故意停顿一下
                 setTimeout(() => resolve(), 500);
-            });  // 故意停顿一下
+            });  
         }
     }
 

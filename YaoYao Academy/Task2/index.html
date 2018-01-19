@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>IFE YaoYao Academy Task 02</title>
+        <style>
+            body {
+                background: #e8e8e8;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            form {
+                width: 600px;
+                margin: auto;
+                background: white;
+                border-radius: 4px;
+                padding: 20px;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .form-item {
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: center;
+            }
+
+            .form-item>label {
+                /* width: 80px; */
+                text-align: right;
+                font: 1rem bold;
+                line-height: 2rem;
+                margin-right: 12px;
+            }
+
+            .input-item {
+                display: flex;
+                flex-flow: column nowrap;
+                flex: 1;
+            }
+
+            .input-item>input {
+                height: 2rem;
+                border: 1px solid #e1e1e1;
+                border-radius: 4px;
+                transition: all 0.3s;
+                outline: none;
+                padding-left: 8px;
+            }
+
+            .input-item.pass>.info {
+                color: green;
+            }
+
+            .input-item.fail>.info {
+                color: darkred;
+            }
+
+            .input-item.pass>input {
+                border-color: green;
+            }
+
+            .input-item.fail>input {
+                border-color: darkred;
+            }
+        </style>
+    </head>
+    <body>
+        <form id="validate-form">
+            <div class="form-item">
+                <label for="input">名称</label>
+                <div class="input-item">
+                    <input type="text" id="input" required>
+                    <span class="info" id="info"></span>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="input">密码</label>
+                <div class="input-item">
+                    <input type="text" id="input" required>
+                    <span class="info" id="info"></span>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="input">密码确认</label>
+                <div class="input-item">
+                    <input type="text" id="input" required>
+                    <span class="info" id="info"></span>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="input">邮箱</label>
+                <div class="input-item">
+                    <input type="text" id="input" required>
+                    <span class="info" id="info"></span>
+                </div>
+            </div>
+            <div class="form-item">
+                <label for="input">手机</label>
+                <div class="input-item">
+                    <input type="text" id="input" required>
+                    <span class="info" id="info"></span>
+                </div>
+            </div>
+            <input type="submit" value="提交">
+        </form>
+
+        <script>
+            (function () {
+                'use strict';
+
+                // 表单状态 
+                const state = {
+                    name: '',
+                    password: '',
+                    confirmPassword: '',
+                    email: '',
+                    phoneNum: ''
+                }
+
+                /**
+                * 主要负责视图及dom
+                */
+                function createFormItem(name, dataKey, inputType, validator, hint, passMessage, failMessage) {
+                    const formItem = document.createElement('div');
+                    formItem.classList.add('form-item');
+                    formItem.innerHTML =
+                        `<label>${name}</label>
+                        <div class="input-item">
+                            <input type="${inputType}" required>
+                            <span class="info hidden">${hint}</span>
+                        </div>`;
+
+                    const info = formItem.querySelector('.info');
+                    const input = formItem.querySelector('input');
+                    const itemContainer = formItem.querySelector('.input-item');
+
+                    input.addEventListener('change', () => state[dataKey] = input.value);  // 同步表单状态
+                    input.addEventListener('focus', () => info.classList.remove('hidden'));  // 显示提醒
+                    input.addEventListener('blur', () => {
+                        // 校验并显示结果
+                        const classList = itemContainer.classList;
+                        if (validator()) {
+                            info.textContent = passMessage;
+                            classList.remove('fail');
+                            classList.add('pass');
+                        } else {
+                            info.textContent = failMessage;
+                            classList.remove('pass');
+                            classList.add('fail');
+                        }
+                    });
+
+                    return {
+                        node: FormItem,
+                        forceValidate() {
+                            input.focus();
+                            input.blur();
+                        }
+                    };
+                }
+
+                function handleSubmit(event) {
+                    event.preventDefault();
+                    validateAll();
+                }
+
+
+                function validateAll() {
+
+                }
+
+                function validateName() {
+                    const name = state.name;
+                    const minLength = 4, maxLength = 16;
+                    const length = Array.from(name).reduce((accu, next) => accu + getCharLength(next), 0);
+                    return length >= minLength && length <= maxLength;
+                }
+
+                function validatePassword() {
+                    const length = state.password.length;
+                    return length >= 6 && length <= 20;
+                }
+
+                function validateConfirmPassword() {
+                    return state.confirmPassword === state.password;
+                }
+
+                function validateEmail() {
+                    return /^\w+(\.\w+)*@(\w+(-\w+)?\.)+\w+$/.test(state.email);
+                }
+
+                function validatePhoneNum() {
+                    return /^1\d{10}$/.test(state.phoneNum);
+                }
+
+                // char为长度为1的字符串
+                function getCharLength(char) {
+                    const charCode = char.charCodeAt(0);
+                    if (charCode >= 0x4e00 && charCode <= 0x9fa5) {
+                        // 中文字符
+                        return 2;
+                    }
+                    if (charCode >= 0xff00 && charCode <= 0xffff) {
+                        // 全角符号
+                        return 2;
+                    }
+                    return 1;
+                }
+
+                document.querySelector('#validate-form').addEventListener('submit', handleSubmit);
+            })();
+        </script>
+    </body>
+</html>
