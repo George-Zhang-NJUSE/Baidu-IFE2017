@@ -1,0 +1,31 @@
+body {
+    background: #e8e8e8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+form {
+    width: 600px;
+    margin: auto;
+    background: white;
+    border-radius: 4px;
+    padding: 20px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.form-item {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-bottom: 12px;
+}
+
+.form-item > * {
+    margin-right: 16px;
+}
