@@ -1,0 +1,135 @@
+body {
+    margin: 0;
+    height: 2000px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button {
+    outline: none;
+    margin-left: 12px;
+    background: white;
+    border-radius: 4px;
+    padding: 8px 16px 8px 16px;
+    border: 1px solid #e3e3e3;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.modal-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal {
+    position: absolute;
+    border-radius: 8px;
+    width: 400px;
+    background: white;
+    left: 0; 
+    right: 0; 
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 2;
+}
+
+
+.modal.center {
+    animation: pop-up 0.3s ease-out;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.modal.top {
+    animation: drop-down 0.3s ease-out;
+    top: 25%;
+}
+
+.modal.bottom {
+    animation: toast-up 0.3s ease-out;
+    bottom: 25%;
+}
+
+@keyframes pop-up {
+    from {
+        opacity: 0;
+        transform: scale(0.5) translateY(-50%);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(-50%);
+    }
+}
+
+@keyframes drop-down {
+    from {
+        opacity: 0;
+        top: 0%;
+    }
+    to {
+        opacity: 1;
+        top: 25%;
+    }
+}
+
+@keyframes toast-up {
+    from {
+        opacity: 0;
+        bottom: 0%;
+    }
+    to {
+        opacity: 1;
+        bottom: 25%;
+    }
+}
+
+.modal > * {
+    padding: 12px 24px 12px 24px;
+}
+
+.modal > *:not(:last-child) {
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.modal .title {
+    background: #e3e3e3;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal .action {
+    float: right;
+}
+
+button.primary {
+    color: white;
+    background: #1890ff;
+    border-color: #1890ff;
+}
+
+button.primary:hover {
+    background: #40a9ff;
+    border-color: #40a9ff;
+}
+
+button.normal:hover {
+    border-color: #40a9ff;
+    color: #40a9ff;
+}
+
+.outer {
+    width: 100%;
+    height: 100%;
+    background: gray;
+    opacity: 0.8;
+}
+
+.hidden {
+    visibility: hidden;
+}
