@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+table {
+    margin-top: 80px;
+    border: 1px solid #e1e1e1;
+    border-spacing: 0;
+}
+
+caption {
+    margin-bottom: 12px;
+}
+
+th, td {
+    padding: 8px 20px 8px 20px;
+    border: 1px solid #e1e1e1;
+}
+
+th {
+    background: #f4f4f4;
+}
+
+th.with-control {
+    position: relative;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+td {
+    text-align: center;
+}
+
+tbody > tr {
+    transition: all 0.3s;
+}
+
+tbody > tr:hover {
+    background: #e6f7ff;
+}
+
+.sort-container {
+    position: absolute;
+    right: 4px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+}
+
+.sort-container > * {
+    display: block;
+}
+
+.sort-container > input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    outline: none;
+    background-image: url(triangleDown.svg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 12px;
+    height: 12px;
+    transition: all 0.3s;
+    opacity: 0.15;
+}
+
+.sort-container > input:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.sort-container > input.up {
+    transform: rotate(180deg);
+}
+
+.sort-container > input:checked {
+    opacity: 1;
+}
+
+@keyframes pop-up {
+    from {
+        opacity: 0;
+        transform: scale(0.5) translateY(-50%);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(-50%);
+    }
+}
