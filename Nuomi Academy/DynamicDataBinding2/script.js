@@ -13,10 +13,10 @@
         _makeReactive(proxy, store) {
             Object.getOwnPropertyNames(store).forEach(key => {
 
-                const subProxy = { ref: null };
+                let subProxy = null;
                 if (typeof store[key] === 'object') {
-                    subProxy.ref = {};
-                    this._makeReactive(subProxy.ref, store[key]);
+                    subProxy = {};
+                    this._makeReactive(subProxy, store[key]);
                 }
                 Object.defineProperty(proxy, key, {
                     enumerable: true,
@@ -24,12 +24,12 @@
                     get: () => {
                         console.log('你访问了' + key);
                         const original = store[key];
-                        return typeof original === 'object' ? subProxy.ref : original;
+                        return typeof original === 'object' ? subProxy : original;
                     },
                     set: (value) => {
                         if (typeof value === 'object') {
-                            subProxy.ref = {}
-                            this._makeReactive(subProxy.ref, value);
+                            subProxy = {}
+                            this._makeReactive(subProxy, value);
                         }
                         console.log(`你设置了${key}，新的值为${value}`);
                         store[key] = value;
