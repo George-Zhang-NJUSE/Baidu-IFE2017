@@ -95,7 +95,7 @@
             });
 
             // 此时walker指向直接包含目标属性的那个对象proxy
-            this._subscribeChange(walker, finalKey, callback, true, true);
+            this._subscribeChange(walker, finalKey, callback, isDeepMode);
         }
 
     }
@@ -111,7 +111,7 @@
     app2.$watch('name', function (newName) {
         console.log(`我的姓名发生了变化，可能是姓氏变了，也可能是名字变了。
                     现在的姓名是：firstName:${newName.firstName}  lastName:${newName.lastName}`);
-    });
+    }, true);
     
     app2.data.name.firstName = 'hahaha';
     app2.data.name.lastName = 'blablabla';
