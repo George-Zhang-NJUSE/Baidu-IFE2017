@@ -9,6 +9,7 @@
          * @param {HTMLElement} mountNode 挂载的父元素，该元素需为positioned
          */
         constructor(menuItems, mountNode) {
+
             // 构建自身DOM结构
             const node = document.createElement('div');
             node.innerHTML = `
@@ -25,10 +26,15 @@
             // 为父节点绑定相关事件
             mountNode.addEventListener('contextmenu', event => {
                 event.preventDefault();
+                event.stopPropagation();
                 const { offsetX, offsetY } = event;
                 this.showAt(offsetX, offsetY);
             })
-            mountNode.addEventListener('click', () => this.hide());
+
+            // 点击其他区域隐藏菜单
+            const hideSelf = () => this.hide();
+            document.addEventListener('click', hideSelf);
+            document.addEventListener('contextmenu', hideSelf);
 
             this._node = node;
         }
