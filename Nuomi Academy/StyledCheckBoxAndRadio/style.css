@@ -69,7 +69,10 @@ label {
 
 #pseudo-elem-demo input[type=checkbox] + label::before {
     box-sizing: border-box;
-    content: "";
+    /* content从无到有时元素会下沉的workaround */
+    content: "×";
+    color: transparent;
+
     display: inline-block;
     width: 100%;
     height: 100%;
