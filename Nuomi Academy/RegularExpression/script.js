@@ -27,10 +27,7 @@
      * @param {string} input 
      */
     function hasSameAdjacentWords(input) {
-        return /\s(\w+)\s+\1\s/.test(input)
-            || /^(\w+)\s+\1\s/.test(input)
-            || /\s(\w+)\s+\1$/.test(input)
-            || /^(\w+)\s+\1$/.test(input);
+        return /(?:^|\s)(\w+)\s+\1(?:$|\s)/.test(input);
     }
 
     /**

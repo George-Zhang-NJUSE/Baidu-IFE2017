@@ -1,0 +1,34 @@
+# main title
+## title
+>this is a quote
+>another line
+>> quoted quote
+>> quoted another line
+>>> quoted quoted quote
+>> quoted another line
+>>> quoted quoted quote
+>>> quoted quoted another line
+>another line
+
+```
+let a=3;
+let b=4;
+let c=5;
+if(a){
+    if(b){
+        c=1;
+    }
+}
+```
+
+press `delete`
+
+
+    function foo(){
+        return 'bar';
+    }
+    if(a){
+        if(b){
+            c=1;
+        }
+    }
