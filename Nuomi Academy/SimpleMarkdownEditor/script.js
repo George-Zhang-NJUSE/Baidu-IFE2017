@@ -6,7 +6,10 @@
     const preview = document.querySelector('.preview');
     const TAB = '    ';
 
-    const parse = compose(parseNewLine, parseHeaders, parseCodeBlock, parseInlineCode, parseQuote);
+    const parse = compose(
+        parseNewLine, parseHeaders, parseCodeBlock, parseInlineCode,
+        parseQuote, parseList, parseImage, parseLink
+    );
     const render = () => {
         preview.innerHTML = parse(editor.value);
     };
@@ -22,17 +25,10 @@
                 cursorPos = startPos,
                 tmpStr = editor.value;
             editor.value = tmpStr.substring(0, startPos) + TAB + tmpStr.substring(endPos, tmpStr.length);
-            cursorPos += tab.length;
+            cursorPos += TAB.length;
             editor.selectionStart = editor.selectionEnd = cursorPos;
         }
     })
-
-    // 读取示例文本
-    // const response = await fetch('demo.txt');
-    // const demoText = await response.text();
-    // editor.value = demoText;
-
-
 
     /**
      * 组合多个纯函数，完成链式调用，返回组合后的函数
@@ -50,7 +46,7 @@
 
     /**
      * 必须最先被调用
-     * 将换行符替换为对应html文本（br），在首尾也添加换行，并返回
+     * 将换行符替换为对应html文本(br)，在首尾也添加换行，并返回
      * @param {string} text makedown文本
      */
     function parseNewLine(text) {
@@ -58,7 +54,7 @@
     }
 
     /**
-     * 将#标注的标题替换为对应html文本（h1-h6）并返回
+     * 将#标注的标题替换为对应html文本(h1-h6)并返回
      * @param {string} text makedown文本
      */
     function parseHeaders(text) {
@@ -69,26 +65,25 @@
     }
 
     /**
-     * 将markdown中的列表替换为对应html文本（ol,ul）并返回
+     * 将markdown中的列表替换为对应html文本(ol,ul)并返回
      * @param {string} text makedown文本
      */
     function parseList(text) {
         // 先定位到列表文本
         return text.replace(/(<br>(    )*([1-9]\d*\.|\*) ?.+?(?=<br>))+/g, matchedStr => {
             // 对列表文本进行处理
-            matchedStr = /^<br>\*/.test(matchedStr) ? `<ul>${matchedStr}</ol>` : `<ol>${matchedStr}</ol>`;
-
-            const inner = matchedStr.replace(/<br>([1-9]\d*\.|\*) ?/g, '<br>')  // 去掉标号
-                .replace(/<br>(.+?(?:<br>(    )+.+?))/g, (matchedStr,content) => {
-                    return `<li>${parseList(content)}</li>`
-                })
-                .replace()
-            return parseQuote(inner);
+            const listStr = /^<br>\*/.test(matchedStr) ? `<ul>${matchedStr}</ul>` : `<ol>${matchedStr}</ol>`;
+            const temp = listStr.replace(/<br>([1-9]\d*\.|\*) ?/g, '<br>');  // 去掉标号
+            const result = temp.replace(/(<br>.+?(?:<br>(?:    )+.+?(?=<br>|<\/ol>|<\/ul>))*(?=<br>|<\/ol>|<\/ul>))/g, (matched, content, offset, original) => {
+                const forwardedContent = content.replace(/<br>    /g, '<br>');   // 去掉一层tab
+                return `<li>${parseList(forwardedContent + '<br>').replace(/^<br>|<br>$/g, '')}</li>`;
+            });
+            return result;
         })
     }
 
     /**
-     * 将markdown中的引用(>位于行首)替换为对应html文本（blockquote）并返回
+     * 将markdown中的引用(>位于行首)替换为对应html文本(blockquote)并返回
      * 支持单行引用、多行引用、引用嵌套
      * @param {string} text makedown文本
      */
@@ -102,7 +97,7 @@
     }
 
     /**
-     * 将markdown中的代码块(```或tab缩进，上面有一个空行)替换为对应html文本（code class=code-block）并返回
+     * 将markdown中的代码块(```或tab缩进，上面有一个空行)替换为对应html文本(code class=code-block)并返回
      * 不支持标注编程语言类型及语法高亮
      * @param {string} text makedown文本
      */
@@ -126,11 +121,29 @@
     }
 
     /**
-     * 将markdown中的内联代码(``)替换为对应html文本（code class=code-inline）并返回
+     * 将markdown中的内联代码(``)替换为对应html文本(code class=code-inline)并返回
      * @param {string} text makedown文本
      */
     function parseInlineCode(text) {
         return text.replace(/`(.+)`/g, (matchedStr, content) => `<code class="code-inline">${content}</code>`);
+    }
+
+    /**
+     * 将markdown中的链接([名称](网址))替换为对应html文本(a)并返回
+     * 只支持内链式，不支持引用式
+     * @param {string} text makedown文本
+     */
+    function parseLink(text) {
+        return text.replace(/\[(.+)\]\((.+)\)/g, '<a target="_blank" href="$2">$1</a>');
+    }
+
+    /**
+     * 将markdown中的图片(![](src 'descrition'))替换为对应html文本(img)并返回
+     * 只支持内链式，不支持引用式
+     * @param {string} text makedown文本
+     */
+    function parseImage(text) {
+        return text.replace(/!\[\]\((\S+)(?:\s'(.+)')?\)/g, '<img src="$1" alt="$2">');
     }
 
 })();
